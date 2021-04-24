@@ -31,13 +31,11 @@
             <BeginStoryboard Storyboard="{StaticResource MenuClose}"/>
         </EventTrigger>
     </Window.Triggers>
-
-    
-    
-    <Grid Background="LightGray">
+  
+    <Grid Background="White">
         
         <Grid x:Name="GridTitle" Height="60" VerticalAlignment="Top" Background="#00000000" MouseDown="GridTitle_MouseDown">
-            <TextBlock Text="欢迎使用本软件" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Foreground="White" />
+            <TextBlock Text="欢迎使用本软件" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Foreground="Gray" />
             <Button Style="{StaticResource MaterialDesignFlatButton}"
                     Content="{materialDesign:PackIcon Close}"
                     VerticalAlignment="Center"
@@ -92,6 +90,20 @@
                 </ListView>
             </StackPanel>
         </Grid>
+
+        <Button
+          Style="{StaticResource MaterialDesignOutlinedButton}"
+            Width="200"
+            Height="50"
+          ToolTip="MaterialDesignOutlinedButton"
+          Content="LEARN MORE" />
+
+        <ToggleButton
+          Margin="0,100,0,0"
+          Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+          ToolTip="主题"
+          IsChecked="{Binding IsDarkTheme}" />
+        
     </Grid>
     
 </Window>
