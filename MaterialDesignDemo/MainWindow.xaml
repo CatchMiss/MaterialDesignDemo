@@ -6,21 +6,45 @@
         xmlns:local="clr-namespace:MaterialDesignDemo"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="MainWindow" Height="600" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
+        d:DataContext="{d:DesignInstance Type=local:ColorToolViewModel}"
+        Title="MainWindow" Height="1000" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
     
     <Window.Resources>
-        <Storyboard x:Key="MenuOpen">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="60"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="MenuClose">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <ResourceDictionary>
+
+            <Storyboard x:Key="MenuOpen">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="60"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="MenuClose">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            
+            <Style TargetType="TextBlock" x:Key="HexLabelTextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+                <Setter Property="Margin" Value="8" />
+            </Style>
+
+            <DataTemplate DataType="{x:Type Color}" x:Key="SwatchColorTemplate">
+                <Button
+                    Height="40"
+                    Width="40"
+                    Background="{Binding Converter={StaticResource ColorToBrushConverter}}" 
+                    Command="{Binding DataContext.ChangeHueCommand, RelativeSource={RelativeSource AncestorType=local:ColorTool}}" 
+                    CommandParameter="{Binding}">
+                    
+                </Button>
+            </DataTemplate>
+            
+        </ResourceDictionary>
+        
     </Window.Resources>
 
     <Window.Triggers>
@@ -103,7 +127,76 @@
           Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
           ToolTip="主题"
           IsChecked="{Binding IsDarkTheme}" />
-        
+
+        <StackPanel Margin="100, 50, 0, 0" >
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Width" Value="40" />
+                        <Setter Property="Margin" Value="1 1 0 0" />
+                        <Setter Property="TextAlignment" Value="Center" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <Rectangle Width="80" />
+                <TextBlock Text="50" />
+                <TextBlock Text="100" />
+                <TextBlock Text="200" />
+                <TextBlock Text="300" />
+                <TextBlock Text="400" />
+                <TextBlock Text="500" />
+                <TextBlock Text="600" />
+                <TextBlock Text="700" />
+                <TextBlock Text="800" />
+                <TextBlock Text="900" />
+                <TextBlock Text="A100" />
+                <TextBlock Text="A200" />
+                <TextBlock Text="A400" />
+                <TextBlock Text="A700" />
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding Swatches}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type materialDesignColors:ISwatch}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Width="80" VerticalAlignment="Center" />
+                            <ItemsControl ItemsSource="{Binding Hues}" ItemTemplate="{StaticResource SwatchColorTemplate}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <Grid Height="100" Margin="100,800,50,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <DockPanel>
+                <TextBox
+                    Text="{Binding Color, ElementName=ColorPicker, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource MaterialDesignFilledTextBox}"
+                    materialDesign:HintAssist.Hint="Color HEX value"
+                    DockPanel.Dock="Top"
+                    Margin="2,0,10,2"/>
+
+                <Rectangle
+                    Fill="{Binding Color, ElementName=ColorPicker, Converter={StaticResource ColorToBrushConverter}}"
+                    Margin="2,0,10,2" />
+            </DockPanel>
+
+            <materialDesign:ColorPicker
+                x:Name="ColorPicker"
+                Grid.Column="1"
+                Color="{Binding SelectedColor, Delay=25}"/>
+        </Grid>
     </Grid>
     
 </Window>

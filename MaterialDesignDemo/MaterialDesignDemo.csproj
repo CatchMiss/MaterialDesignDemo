@@ -73,10 +73,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BrushToHexConverter.cs" />
+    <Compile Include="ButtonAssist.cs" />
+    <Compile Include="Buttons.xaml.cs" />
+    <Compile Include="ButtonsViewModel.cs" />
     <Compile Include="ColorScheme.cs" />
+    <Compile Include="ColorToBrushConverter.cs" />
+    <Compile Include="ColorTool.xaml.cs">
+      <DependentUpon>ColorTool.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ColorToolViewModel.cs" />
+    <Compile Include="MultiValueEqualityConverter.cs" />
     <Compile Include="PaletteHelperExtensions.cs" />
     <Compile Include="ViewModelBase.cs" />
+    <Page Include="Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColorTool.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
